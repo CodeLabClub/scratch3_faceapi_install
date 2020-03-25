@@ -6,6 +6,10 @@ README.md中涉及了fece-api.js在Scratch3中基本的安装过程，基本实�
 此.md文件的主要内容为如何进一步地使用face-api.js所提供的API在Scratch3的index.js中进行修改，使其实现人脸识别的功能。
 如果对face-api.js的API有进一步的兴趣，或者希望利用它自主开发更多有趣的功能，建议查看[face-api.js](https://github.com/justadudewhohacks/face-api.js#high-level-api)。
 
+### 基本结构
+
+
+
 ### 好的，我们进入代码
 
 如果只是希望实现人脸识别功能，可以跳过以下段落，直接进入“操作方法”部分。
@@ -16,12 +20,12 @@ facialFeatureDiskObtain(args)
         {
             var num = args.IMAGENUM //the number of base images that you want to load
             var faceRef = []
+            
 
             this.timer = setTimeout(async () => {
-                referenceData = [] //clear previous data
-                const labels = ['sheldon','raj', 'leonard', 'howard']
+                
+                const labels = ['penny','raj', 'sheldon', 'howard','bernadette']
                 for(var i = 0; i< num ; i++){
-                    if(referenceData.length == num) break;
                         // fetch image data from urls and convert blob to HTMLImage element
                     imgUrl = './static/imageBase/base_'+i+'.png'
                     const img = await faceapi.fetchImage(imgUrl)
@@ -33,11 +37,13 @@ facialFeatureDiskObtain(args)
                         .withFaceDescriptor()
     
                         const faceDescriptor = [faceRef.descriptor]
-                        referenceData[i] = new faceapi.LabeledFaceDescriptors(labels[i], faceDescriptor)
-                        console.log(referenceData[i])
-                        if (!referenceData[i]) {
+                        referenceData[refIndex] = new faceapi.LabeledFaceDescriptors(labels[i], faceDescriptor)
+                        console.log(referenceData[refIndex])
+                        if (!referenceData[refIndex]) {
+                            
                             return
                         }
+                        refIndex += 1 // length of array plus one
                     }
                 }
              },1000)   
