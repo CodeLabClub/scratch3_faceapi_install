@@ -55,6 +55,41 @@ faceRef.descriptor 的具体内容如下图所示。
 
 值得注意的是，上述程序中 imgUrl = './static/imageBase/base_'+i+'.png' 语句限定了存放在./static/imageBase/ 路径下的图像文件必须以“base_<编号>” 的方式命名，并以.png的方式存储才能被正确读取。这是目前此 index.js 的一个缺点，虽然作为开源程序可以通过直接修改imgUrl 的架构方式做出一定限度上的修改，但理想的处理方式应该是能够以某种方式通过Scratch3 的GUI界面选项更加灵活地修改。<br><br>
 
+除此之外，我们也可以从Scratch3自带的摄像头读取数据：
+```javascript
+ facialFeatureWebcamObtain(args){
+            var num = args.IMAGENUM //the number of base images that you want to load
+            var faceRef = [] //a cache space for raw data obtained from webcam
+            
+            this.timer = setTimeout(async () => {
+                //const labels = ['sheldon','raj', 'leonard', 'howard']
+                for(var i = 0; i< num ; i++){
+                        
+                    // detect the face with the highest score in the image and compute it's landmarks and face descriptor
+                    faceRef[i] = await faceapi
+                    .detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.5 }))
+                    .withFaceLandmarks()
+                    .withFaceDescriptor()
+
+                    //console.log(faceRef[i])
+                    if(faceRef[i] == undefined) { 
+                        i-- 
+                        alert("Please stay within the boundary of webcam, thanks!")
+                        continue
+                    }
+                    else{
+
+                        const faceDescriptor = [faceRef[i].descriptor]
+                        referenceData[refIndex] = new faceapi.LabeledFaceDescriptors(args.NAME,faceDescriptor)
+                        console.log(referenceData[refIndex])
+                        refIndex += 1 // length of array plus one
+                    }
+                }
+            },1000)   
+        }
+```
+同样的，args.IMAGENUM 传入读取的图片张数，更准确来说是对于同一标签的图像的读取次数。正如基本结构中所示，无论是从本地读取图片还是从Scratch3自带摄像头读取图片，最终都转换为人脸特征（faceRef.descriptor）的形式存储到 referenceData[]中，以供之后的识别部分使用。
+
 
 
 
