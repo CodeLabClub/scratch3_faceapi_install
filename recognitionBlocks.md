@@ -8,7 +8,7 @@ README.md中涉及了fece-api.js在Scratch3中基本的安装过程，基本实�
 
 ### 基本结构
 
-&emsp;![image](images/Slide1.PNG)<br>
+&emsp;![image](images/architectureForFaceapi_v1.png)<br>
 
 ### 好的，我们进入代码
 
@@ -51,8 +51,6 @@ facialFeatureDiskObtain(args)
 ```
 首先，我们读取输入的形参args.IMAGENUM，这一参数由用户设置，用于指出读取几张图片。faceRef作为数组，存放人脸检测得到的人脸数据。referenceData[]为全局变量，用于存放读取得到的人脸特征数据，设置为全局变量的原因是考虑到之后通过摄像头(webcam)读取的人脸特征数据也可以存储到同一数组下，便于人脸识别和统一管理（此处指统一清空）,refIndex 为服务于此过程的一个变量，在获得人脸特征后加1（refIndex += 1），在STOP选项中被清0。<br><br>
 
-faceRef.descriptor 的具体内容如下图所示。
-
 值得注意的是，上述程序中 imgUrl = './static/imageBase/base_'+i+'.png' 语句限定了存放在./static/imageBase/ 路径下的图像文件必须以“base_<编号>” 的方式命名，并以.png的方式存储才能被正确读取。这是目前此 index.js 的一个缺点，虽然作为开源程序可以通过直接修改imgUrl 的架构方式做出一定限度上的修改，但理想的处理方式应该是能够以某种方式通过Scratch3 的GUI界面选项更加灵活地修改。<br><br>
 
 除此之外，我们也可以从Scratch3自带的摄像头读取数据：
@@ -88,7 +86,12 @@ faceRef.descriptor 的具体内容如下图所示。
             },1000)   
         }
 ```
-同样的，args.IMAGENUM 传入读取的图片张数，更准确来说是对于同一标签的图像的读取次数。正如基本结构中所示，无论是从本地读取图片还是从Scratch3自带摄像头读取图片，最终都转换为人脸特征（faceRef.descriptor）的形式存储到 referenceData[]中，以供之后的识别部分使用。
+同样的，args.IMAGENUM 传入读取的图片张数，更准确来说是对于同一标签的图像的读取次数。正如基本结构中所示，无论是从本地读取图片还是从Scratch3自带摄像头读取图片，最终都转换为人脸特征（faceRef.descriptor）的形式存储到 referenceData[]中，以供之后的识别部分使用。<br><br>
+
+referenceData[ ] 的数据输入和输出如下图所示：<br><br>
+
+&emsp;![image](images/architectureForFaceapi_v1_s2.png)<br>
+
 
 
 
