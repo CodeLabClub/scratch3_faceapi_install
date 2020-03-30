@@ -90,7 +90,57 @@ facialFeatureDiskObtain(args)
 
 referenceData[ ] 的数据输入和输出如下图所示：<br><br>
 
-&emsp;![image](images/architectureForFaceapi_v1_s2.png)<br>
+&emsp;![image](images/architectureForFaceapi_s2_v1.png)<br><br>
+
+此时，我们可以使用facialFeatureMatch() 和multiFeatureMatch() 来比对从摄像头输入的人脸特征和referenceData[ ]中的人脸特征从而得到识别结果。<br><br>
+
+<此处添加gif>
+
+facialFeatureMatch() 代码段如下：
+```javascript
+facialFeatureMatch(){
+
+            const originCanvas = this.originCanvas  // 右上侧canvas
+            const canvas = this.canvas  // 创建用于绘制canvas
+
+
+            canvas.width = 480
+            canvas.height = 360
+
+            // 将绘制的canvas覆盖于原canvas之上
+            originCanvas.parentElement.style.position = 'relative'
+            canvas.style.position = 'absolute'
+            canvas.style.top = '0'
+            canvas.style.left = '0'
+            originCanvas.parentElement.append(canvas)
+
+
+            this.timer = setInterval(async () => {
+                // create FaceMatcher with automatically assigned labels
+                // from the detection results for the reference image
+                const faceMatcher = new faceapi.FaceMatcher(referenceData)
+                const queryImage =  await faceapi
+                    .detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.5 })).withFaceLandmarks().withFaceDescriptor()
+                if (queryImage) {
+                    const displaySize = {width: 400 , height: 300}
+                    const resizedDetections = faceapi.resizeResults(queryImage, displaySize)
+                    const bestMatch = faceMatcher.findBestMatch(queryImage.descriptor)
+                    recognition = bestMatch.label
+                    var box = { x: 50, y: 50, width: 100, height: 100 }
+                    box.x = resizedDetections.detection.box.x 
+                    box.y = resizedDetections.detection.box.y 
+                    box.width = resizedDetections.detection.box.width 
+                    box.height = resizedDetections.detection.box.height 
+                    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+                    const drawBox = new faceapi.draw.DrawBox(box, { label: recognition })
+                    drawBox.draw(canvas)
+                    //recognition = recognition.substring(recognition.length-5)
+                    console.log(recognition)
+                    //return text
+                }
+            },500);
+        }   
+```
 
 
 
