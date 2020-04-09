@@ -149,8 +149,8 @@ facialFeatureMatch(){
 首先设置了canvas，之后使用const queryImage =  await faceapi.detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.5 })).withFaceLandmarks().withFaceDescriptor() 语句从webcam中获取了人脸数据，使用.withFaceLandmarks().withFaceDescriptor()选项获取了原始人脸（queryImage）中的landmark特征向量，此时利用referenceData[ ]中的特征向量使用knn算法计算距离后得出原始人脸（queryImage）最可能的所属类别（属于referenceData[ ]中的哪一个已标识的人脸特征），用所属类别对应的label标识作为识别的结果。
 
 注：上述程序结构和API的使用方法借鉴于：
-[1] https://github.com/justadudewhohacks/face-api.js#high-level-api 的 Face Recognition by Matching Descriptors 部分<br>
-[2] https://itnext.io/realtime-javascript-face-tracking-and-face-recognition-using-face-api-js-mtcnn-face-detector-d924dd8b5740 <br><br>
+[1](https://github.com/justadudewhohacks/face-api.js#high-level-api)的 Face Recognition by Matching Descriptors 部分<br>
+[2] (https://itnext.io/realtime-javascript-face-tracking-and-face-recognition-using-face-api-js-mtcnn-face-detector-d924dd8b5740)的这一篇文章<br><br>
 
 由于本文中只是涉及了在Scratch3 架构下face-api.js的使用，如果希望在更广泛的场合中使用相关API，建议参考上述文档。
 
