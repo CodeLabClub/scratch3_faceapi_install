@@ -10,9 +10,8 @@ README.md中涉及了fece-api.js在Scratch3中基本的安装过程，基本实�
 
 &emsp;![image](images/architectureForFaceapi_v1.png)<br>
 
-#### 好的，我们进入代码
+### 好的，我们进入代码
 
-如果只是希望实现人脸识别功能，可以跳过以下段落，直接进入“操作方法”部分。
 
 首先我们从本地读取图片用于人脸识别：
 ``` javascript
@@ -52,7 +51,7 @@ facialFeatureDiskObtain(args)
 首先，我们读取输入的形参args.IMAGENUM，这一参数由用户设置，用于指出读取几张图片。faceRef作为数组，存放人脸检测得到的人脸数据。referenceData[]为全局变量，用于存放读取得到的人脸特征数据，设置为全局变量的原因是考虑到之后通过摄像头(webcam)读取的人脸特征数据也可以存储到同一数组下，便于人脸识别和统一管理（此处指统一清空）,refIndex 为服务于此过程的一个变量，在获得人脸特征后加1（refIndex += 1），在STOP选项中被重置为0。<br><br>
 
 以下是从本地读取referenceData[] 的展示：<br>
-&emsp;![image](scratch3_faceapi/facialFeatureDiskObtain.gif)<br>
+&emsp;![image](https://github.com/doNotBeTooSerious/gifImages/blob/master/scratch3_faceapi/facialFeatureDiskObtain.gif)<br>
 
 值得注意的是，上述程序中 imgUrl = './static/imageBase/base_'+i+'.png' 语句限定了存放在./static/imageBase/ 路径下的图像文件必须以“base_<编号>” 的方式命名，并以.png的方式存储才能被正确读取。这是目前此 index.js 的一个缺点，虽然作为开源程序可以通过直接修改imgUrl 的架构方式做出一定限度上的修改，但理想的处理方式应该是能够以某种方式通过Scratch3 的GUI界面选项更加灵活地修改。<br><br>
 
@@ -94,6 +93,9 @@ facialFeatureDiskObtain(args)
 referenceData[ ] 的数据输入和输出如下图所示：<br><br>
 
 &emsp;![image](images/architectureForFaceapi_s2_v1.png)<br><br>
+
+以下是从摄像头读取referenceData[] 的展示：<br>
+&emsp;![image](https://github.com/doNotBeTooSerious/gifImages/blob/master/scratch3_faceapi/facialFeatureWebcamObtain.gif)<br>
 
 此时，我们可以使用facialFeatureMatch() 和multiFeatureMatch() 来比对从摄像头输入的人脸特征和referenceData[ ]中的人脸特征从而得到识别结果。<br><br>
 
@@ -152,10 +154,6 @@ facialFeatureMatch(){
 
 由于本文中只是涉及了在Scratch3 架构下face-api.js的使用，如果希望在更广泛的场合中使用相关API，建议参考上述文档。
 
-
-### 操作方法
-
-以下给出一个程序和对应的视频示例，用以展示本文所述模块在Scratch3中的效果。
 
 
 
